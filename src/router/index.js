@@ -3,6 +3,7 @@ import Router from 'vue-router'
 // import Index from '@/components/index'
 import List from '@/components/list'
 import Create from '@/components/create'
+import Order from '@/components/order'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/create',
       name: 'create',
       component: Create
+    },
+    {
+      path: '/order',
+      name: 'order',
+      component: Order
     }
   ]
 })

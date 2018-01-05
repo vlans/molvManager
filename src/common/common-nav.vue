@@ -1,8 +1,5 @@
 <template>
   <div>
-    <p class="logo_content">
-      <img src="../assets/logo.png" alt="" class="logo">
-    </p>
     <div class="user_content">
       <p class="user_avator">
         <img src="../assets/user04.png" alt="">

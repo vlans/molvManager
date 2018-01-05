@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <h3>商品列表</h3>
+    <h2>商品列表</h2>
     <div style="height: 40px;margin-bottom: 20px;">
       <el-button type="primary" style="float: left" @click="create">添加商品</el-button>
       <el-cascader
@@ -20,7 +20,7 @@
         <el-button slot="append" icon="el-icon-search"></el-button>
       </el-input>
     </div>
-    <el-table :data="tableData">
+    <el-table :data="tableData" v-loading="loading" style="z-index: 30;">
       <el-table-column prop="name" label="商品名称"></el-table-column>
       <el-table-column prop="price" label="价格"></el-table-column>
       <el-table-column prop="area" label="地区"></el-table-column>
@@ -60,7 +60,8 @@
         currentPage: 1,
         select: '',
         search: '',
-        options: []
+        options: [],
+        loading: true
       }
     }
   }
@@ -71,5 +72,6 @@
   }
   .pagination {
     text-align: right;
+    margin-top: 20px;
   }
 </style>

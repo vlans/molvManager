@@ -58,6 +58,7 @@
           class="avatar-uploader float"
           action="https://jsonplaceholder.typicode.com/posts/"
           :show-file-list="false"
+          v-model="create.cover"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
           <img v-if="imageUrl" :src="imageUrl" class="avatar">
@@ -73,6 +74,7 @@
           style="float: left"
           class="avatar-uploader float"
           action="https://jsonplaceholder.typicode.com/posts/"
+          v-model="create.pdf"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
@@ -88,7 +90,7 @@
         <vue-editor v-model="content" class="float" style="float: left;"></vue-editor>
       </div>
       <div>
-        <el-button type="primary">发布</el-button>
+        <el-button type="primary" @click="submit">发布</el-button>
         <el-button>保存</el-button>
       </div>
     </div>
@@ -100,18 +102,40 @@
   export default {
     name: 'create',
     methods: {
+      submit () {
+        var flag = this.validator()
+        if (flag) {
+          this.$message.error('请检查必填项是否填写完整')
+          // return
+        }
+      },
+      validator () {
+        var flag = false
+        for (var i in this.create) {
+          if (i !== 'desc') {
+            if (this.create[i]) {
+              if (!flag) {
+                flag = false
+              }
+            } else {
+              flag = true
+            }
+          }
+        }
+        return flag
+      },
       handleAvatarSuccess (res, file) {
         this.imageUrl = URL.createObjectURL(file.raw)
       },
       beforeAvatarUpload (file) {
         const isJPG = file.type === 'image/jpeg' || 'image/png'
-        const isLt2M = file.size / 1024 / 1024 < 2
+        const isLt2M = file.size / 1024 / 1024 < 1
 
         if (!isJPG) {
           this.$message.error('上传头像图片只能是 JPG,PNG 格式!')
         }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!')
+          this.$message.error('上传头像图片大小不能超过 1MB!')
         }
         return isJPG && isLt2M
       }
@@ -123,7 +147,9 @@
           area: [],
           desc: '',
           price: '',
-          type: ''
+          type: '',
+          cover: '',
+          pdf: ''
         },
         content: '',
         options: [],
