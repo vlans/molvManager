@@ -37,6 +37,19 @@
   export default {
     name: 'order',
     methods: {
+      async orderList () {
+        var data = {
+          number: '1',
+          pageNum: '20'
+        }
+        await this.$http(
+          {
+            url: 'http://120.79.33.51:8080/motortrip/api/merchandise/merchandiseOrderListBackendQuery',
+            type: 'post',
+            data: data
+          }
+        )
+      },
       handleCurrentChange (v) {
         this.currentPage = v
       }

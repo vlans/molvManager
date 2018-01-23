@@ -4,10 +4,12 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import ElmentUi from 'element-ui'
+import $ from 'jquery'
 
 import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.config.productionTip = false
+Vue.prototype.$http = $.ajax
 
 Vue.use(ElmentUi)
 

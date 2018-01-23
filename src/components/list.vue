@@ -47,6 +47,19 @@
   export default {
     name: 'list',
     methods: {
+      async goodsList () {
+        var data = {
+          number: '1',
+          pageNum: '20'
+        }
+        var { data, errorCode } = await this.$http(
+          {
+            url: 'http://120.79.33.51:8080/motortrip/api/merchandise/merchandiseListBackendQuery',
+            type: 'post',
+            data: data
+          }
+        )
+      },
       create () {
         this.$router.push('/create')
       },
