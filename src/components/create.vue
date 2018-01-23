@@ -106,8 +106,20 @@
         var flag = this.validator()
         if (flag) {
           this.$message.error('请检查必填项是否填写完整')
-          // return
+          return
         }
+        this.createGoods()
+      },
+      async createGoods () {
+        var data = {
+        }
+        await this.$http(
+          {
+            url: 'http://120.79.33.51:8080/motortrip/api/merchandise/addMerchandise',
+            type: 'post',
+            data: data
+          }
+        )
       },
       validator () {
         var flag = false
