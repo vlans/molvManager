@@ -41,7 +41,7 @@
           <span class="required">*</span>
           商品类型
         </span>
-        <el-select v-model="create.type" placeholder="请选择商品类型" filterable>
+        <el-select v-model="create.type" placeholder="请选择商品类型">
           <el-option label="自由行" value="1"></el-option>
           <el-option label="日游小团" value="2"></el-option>
           <el-option label="餐饮美食" value="3"></el-option>
@@ -56,7 +56,7 @@
         <el-upload
           style="float: left;"
           class="avatar-uploader float"
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action="http://120.79.33.51:8080/motortrip/api/merchandise/addPicture"
           :show-file-list="false"
           v-model="create.cover"
           :on-success="handleAvatarSuccess"
@@ -73,12 +73,12 @@
         <el-upload
           style="float: left"
           class="avatar-uploader float"
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action="http://120.79.33.51:8080/motortrip/api/merchandise/addPicture"
           v-model="create.pdf"
           :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload">
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          :on-success="handlePdfSuccess"
+          :before-upload="beforePdfUpload">
+          <img v-if="pdfUrl" src="../assets/pdf.jpg" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </div>
@@ -111,17 +111,29 @@
         this.createGoods()
       },
       async createGoods () {
-        var data = {
-        }
-        await this.$http(
+        var formData = new FormData()
+        formData.append('picture', this.create.cover)
+        formData.append('download', this.create.pdf)
+        formData.append('title', this.create.name)
+        formData.append('des', this.content)
+        formData.append('price', this.create.price)
+        formData.append('type', this.create.type)
+        formData.append('route', this.create.desc)
+        formData.append('provinceId', '1')
+        formData.append('cityId', '2')
+        var { data, errorCode } = await this.$http(
           {
             url: 'http://120.79.33.51:8080/motortrip/api/merchandise/addMerchandise',
             type: 'post',
-            data: data
+            data: formData,
+            processData: false,
+            contentType: false
           }
         )
+        console.log(data, errorCode)
       },
       validator () {
+        console.log(this.create)
         var flag = false
         for (var i in this.create) {
           if (i !== 'desc') {
@@ -138,25 +150,39 @@
       },
       handleAvatarSuccess (res, file) {
         this.imageUrl = URL.createObjectURL(file.raw)
+        this.create.cover = file.raw
+        console.log(file)
+      },
+      handlePdfSuccess (res, file) {
+        this.pdfUrl = true
+        this.create.pdf = file.raw
+        console.log(file)
       },
       beforeAvatarUpload (file) {
         const isJPG = file.type === 'image/jpeg' || 'image/png'
         const isLt2M = file.size / 1024 / 1024 < 1
 
         if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG,PNG 格式!')
+          this.$message.error('上传封面图只能是 JPG,PNG 格式!')
         }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 1MB!')
+          this.$message.error('上传封面图大小不能超过 1MB!')
         }
         return isJPG && isLt2M
+      },
+      beforePdfUpload (file) {
+        const isPDF = file.type === 'application/pdf'
+        if (!isPDF) {
+          this.$message.error('请上传PDF格式！')
+        }
+        return isPDF
       }
     },
     data () {
       return {
         create: {
           name: '',
-          area: [],
+          area: [1],
           desc: '',
           price: '',
           type: '',
@@ -165,7 +191,8 @@
         },
         content: '',
         options: [],
-        imageUrl: ''
+        imageUrl: '',
+        pdfUrl: ''
       }
     },
     components: {
