@@ -11,7 +11,6 @@
     </div>
   </div>
 </template>
-
 <script>
   import commonBar from './common/common-nav'
   import commonTop from './common/common-top'
