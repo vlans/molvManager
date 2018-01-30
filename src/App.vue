@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <common-top @resize="resize" :initResize="initResize"/>
+    <common-top @resize="resize" :initResize="initResize" :userInfo="userInfo"/>
     <div class="molv-con">
-      <common-bar class="bar" :class="{posi: resizeWidth}" :resize="resizeWidth"/>
+      <common-bar class="bar" :class="{posi: resizeWidth}" :resize="resizeWidth" :userInfo="userInfo"/>
       <div class="container" :class="{consi: resizeWidth}">
         <div class="wrapper">
           <router-view/>
@@ -19,10 +19,12 @@
     data () {
       return {
         resizeWidth: false,
-        initResize: false
+        initResize: false,
+        userInfo: {}
       }
     },
     created () {
+      this.checkAuth()
       if (window.innerWidth > 1020) {
         return
       }
@@ -30,6 +32,39 @@
       this.initResize = true
     },
     methods: {
+      async checkAuth () {
+        var { data } = await this.$http(
+          {
+            dataType: 'json',
+            crossDomain: true,
+            xhrFields: {
+              withCredentials: true
+            },
+            type: 'get',
+            url: 'http://120.79.33.51/users/checkAuth3'
+          }
+        )
+        if (data.auth === false) {
+          localStorage.removeItem('uid')
+          localStorage.removeItem('user')
+          location.href = 'http://120.79.33.51/admin/login'
+          return
+        }
+        localStorage.setItem('uid', data.uid)
+        this.validatorLogin(data.uid)
+      },
+      async validatorLogin (id) {
+        var { data, errorCode } = await this.$http(
+          {
+            type: 'post',
+            url: 'http://120.79.33.51:8080/motortrip/api/user/userAdminsPcQuery',
+            data: { userId: id }
+          }
+        )
+        if (errorCode === 0) {
+          this.userInfo = data
+        }
+      },
       resize (v) {
         this.resizeWidth = v
       }

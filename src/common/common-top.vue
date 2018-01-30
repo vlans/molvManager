@@ -6,7 +6,7 @@
     <div class="top-con" :class="{resize: resize}">
       <div class="am-fl am-icon-list top-menu" @click="menuSize"></div>
       <div class="sign">
-        <span class="text_wel">欢迎您,admin</span>
+        <span class="text_wel">欢迎您{{user ? ',' + user.user.username : ''}}</span>
         <span>
           <i class="am-icon-sign-out"></i>
           退出
@@ -19,16 +19,23 @@
 <script>
   export default {
     name: 'top',
-    props: ['initResize'],
+    props: ['initResize', 'userInfo'],
     watch: {
       initResize (v) {
         this.resize = v
+      },
+      userInfo: {
+        deep: true,
+        handler (v) {
+          this.user = v
+        }
       }
     },
     data () {
       return {
         resize: this.initResize,
-        clickResize: this.initResize
+        clickResize: this.initResize,
+        user: ''
       }
     },
     created () {

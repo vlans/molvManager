@@ -6,9 +6,10 @@
       <el-cascader
         placeholder="筛选城市"
         :options="options"
-        filterable
         change-on-select
-        style="width: 150px; float: left;margin-top: -2px;margin-left: 15px; margin-right: 15px;"
+        v-model="areaValue"
+        @change="changeHandler"
+        style="width: 200px; float: left;margin-top: -2px;margin-left: 15px; margin-right: 15px;"
       ></el-cascader>
       <el-input placeholder="请输入商品名称" v-model="search" style="width: 500px;float: left;height: 100%;" @keydown.enter.native="searchBtn">
         <el-select v-model="select" slot="prepend" placeholder="请选择" style="width: 110px">
@@ -44,9 +45,34 @@
 </template>
 
 <script>
+  import area from '../common/area'
   export default {
     name: 'list',
     methods: {
+      changeHandler (v, n) {
+        this.provinceId = ''
+        this.cityId = ''
+        this.countyId = ''
+        area.forEach((k) => {
+          if (k.label === v[0]) {
+            this.provinceId = k.id
+            if (v[1]) {
+              k.children.forEach(l => {
+                if (l.label === v[1]) {
+                  this.cityId = l.id
+                }
+                if (v[2]) {
+                  l.children.forEach(m => {
+                    if (m.label === v[2]) {
+                      this.countyId = m.id
+                    }
+                  })
+                }
+              })
+            }
+          }
+        })
+      },
       searchBtn () {
         this.goodsList()
       },
@@ -56,7 +82,10 @@
           number: String(this.currentPage),
           pageNum: '20',
           title: String(this.search),
-          type: String(this.select)
+          type: String(this.select),
+          provinceId: this.provinceId,
+          cityId: this.cityId,
+          countyId: this.countyId
         }
         var { data, errorCode } = await this.$http(
           {
@@ -88,9 +117,13 @@
         currentPage: 1,
         select: '',
         search: '',
-        options: [],
+        options: area,
         loading: false,
-        total: 0
+        total: 0,
+        areaValue: [],
+        provinceId: '',
+        cityId: '',
+        countyId: ''
       }
     }
   }

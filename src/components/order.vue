@@ -2,13 +2,6 @@
   <div class="content">
     <h2>订单列表</h2>
     <el-input placeholder="请输入商品名称" v-model="search" style="width: 600px;margin-bottom: 20px;" @keydown.enter.native="searchBtn">
-      <el-select v-model="select" slot="prepend" placeholder="请选择" style="width: 110px">
-        <el-option label="全部" value="1"></el-option>
-        <el-option label="未支付" value="2"></el-option>
-        <el-option label="待支付" value="3"></el-option>
-        <el-option label="交易成功" value="4"></el-option>
-        <el-option label="异常" value="5"></el-option>
-      </el-select>
       <el-button slot="append" icon="el-icon-search" @click.native="searchBtn"></el-button>
     </el-input>
     <el-table :data="tableData" v-loading="loading" style="z-index: 30;">

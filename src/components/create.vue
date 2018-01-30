@@ -8,11 +8,12 @@
           地区标签
         </span>
         <el-cascader
+          style="width: 300px;"
           v-model="create.area"
           placeholder="请选择城市"
           :options="options"
-          filterable
           change-on-select
+          @change="changeHandler"
         ></el-cascader>
       </div>
       <div class="line">
@@ -99,9 +100,34 @@
 
 <script>
   import { VueEditor } from 'vue2-editor'
+  import area from '../common/area'
   export default {
     name: 'create',
     methods: {
+      changeHandler (v) {
+        this.provinceId = ''
+        this.cityId = ''
+        this.countyId = ''
+        area.forEach((k) => {
+          if (k.label === v[0]) {
+            this.provinceId = k.id
+            if (v[1]) {
+              k.children.forEach(l => {
+                if (l.label === v[1]) {
+                  this.cityId = l.id
+                }
+                if (v[2]) {
+                  l.children.forEach(m => {
+                    if (m.label === v[2]) {
+                      this.countyId = m.id
+                    }
+                  })
+                }
+              })
+            }
+          }
+        })
+      },
       submit () {
         var flag = this.validator()
         if (flag) {
@@ -119,8 +145,8 @@
         formData.append('price', this.create.price)
         formData.append('type', this.create.type)
         formData.append('route', this.create.desc)
-        formData.append('provinceId', '1')
-        formData.append('cityId', '2')
+        formData.append('provinceId', this.provinceId)
+        formData.append('cityId', this.countyId)
         var { data, errorCode } = await this.$http(
           {
             url: 'http://120.79.33.51:8080/motortrip/api/merchandise/addMerchandise',
@@ -130,7 +156,15 @@
             contentType: false
           }
         )
-        console.log(data, errorCode)
+        if (errorCode !== 0) {
+          this.$message.error('添加商品失败，请稍后再试')
+          return
+        }
+        this.$message({
+          message: '添加商品成功！',
+          type: 'success'
+        })
+        this.$router.push('/list')
       },
       validator () {
         console.log(this.create)
@@ -182,7 +216,7 @@
       return {
         create: {
           name: '',
-          area: [1],
+          area: [],
           desc: '',
           price: '',
           type: '',
@@ -190,9 +224,12 @@
           pdf: ''
         },
         content: '',
-        options: [],
+        options: area,
         imageUrl: '',
-        pdfUrl: ''
+        pdfUrl: '',
+        provinceId: '',
+        cityId: '',
+        countyId: ''
       }
     },
     components: {
