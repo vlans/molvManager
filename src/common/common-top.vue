@@ -6,8 +6,8 @@
     <div class="top-con" :class="{resize: resize}">
       <div class="am-fl am-icon-list top-menu" @click="menuSize"></div>
       <div class="sign">
-        <span class="text_wel">欢迎您,admin</span>
-        <span>
+        <span class="text_wel">欢迎您{{user ? ',' + user.user.username : ''}}</span>
+        <span @click.native.stop="logout">
           <i class="am-icon-sign-out"></i>
           退出
         </span>
@@ -19,22 +19,43 @@
 <script>
   export default {
     name: 'top',
-    props: ['initResize'],
+    props: ['initResize', 'userInfo'],
     watch: {
       initResize (v) {
         this.resize = v
+      },
+      userInfo: {
+        deep: true,
+        handler (v) {
+          this.user = v
+        }
       }
     },
     data () {
       return {
         resize: this.initResize,
-        clickResize: this.initResize
+        clickResize: this.initResize,
+        user: ''
       }
     },
     created () {
       this.resizeWindow()
     },
     methods: {
+      async logout () {
+        await this.$http(
+          {
+            dataType: 'json',
+            crossDomain: true,
+            xhrFields: {
+              withCredentials: true
+            },
+            type: 'get',
+            url: 'http://120.79.33.51/admin/logout'
+          }
+        )
+        location.href = 'http://120.79.33.51/admin/login'
+      },
       menuSize () {
         this.clickResize = !this.clickResize
         this.$emit('resize', this.clickResize)

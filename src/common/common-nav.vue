@@ -2,11 +2,11 @@
   <div>
     <div class="user_content">
       <p class="user_avator">
-        <img src="../assets/user04.png" alt="">
+        <img :src="user && user.user.avatar" alt="">
       </p>
       <p class="user_name">
         <i class="am-icon-circle-o am-text-success"></i>
-        admin
+        {{user ? user.user.username : ''}}
       </p>
     </div>
     <el-menu class="nav-bar" :collapse="isCollapse" background-color="#282d2f" text-color="#868E8E" active-text-color="#fff" :router="true" :default-active="$route.path">
@@ -16,26 +16,36 @@
           <span>首页管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="1-1">
-            <i class="am-icon-angle-right slider"></i>
-            <span>banner管理</span>
-          </el-menu-item>
-          <el-menu-item index="1-2">
-            <i class="am-icon-angle-right slider"></i>
-            <span>主题管理</span>
-          </el-menu-item>
-          <el-menu-item index="1-3">
-            <i class="am-icon-angle-right slider"></i>
-            <span>目的地管理</span>
-          </el-menu-item>
-          <el-menu-item index="1-3">
-            <i class="am-icon-angle-right slider"></i>
-            <span>经典行程管理</span>
-          </el-menu-item>
-          <el-menu-item index="1-3">
-            <i class="am-icon-angle-right slider"></i>
-            <span>锦囊管理</span>
-          </el-menu-item>
+          <a href="http://120.79.33.51/admin/banner">
+            <el-menu-item  index="1-1">
+              <i class="am-icon-angle-right slider"></i>
+              <span>banner管理</span>
+            </el-menu-item> 
+          </a>
+          <a href="http://120.79.33.51/admin/theme">
+            <el-menu-item index="1-2">
+              <i class="am-icon-angle-right slider"></i>
+              <span>主题管理</span>
+            </el-menu-item>
+          </a>
+          <a href="http://120.79.33.51/admin/index/destination">
+            <el-menu-item index="1-3">
+              <i class="am-icon-angle-right slider"></i>
+              <span>目的地管理</span>
+            </el-menu-item>
+          </a>
+          <a href="http://120.79.33.51/admin/notopen">
+            <el-menu-item index="1-4">
+              <i class="am-icon-angle-right slider"></i>
+              <span>经典路书管理</span>
+            </el-menu-item>
+          </a>
+          <a href="http://120.79.33.51/admin/index/tip">
+            <el-menu-item index="1-5">
+              <i class="am-icon-angle-right slider"></i>
+              <span>锦囊管理</span>
+            </el-menu-item>
+          </a>
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="2">
@@ -44,26 +54,36 @@
           <span>目的地管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="2-1">
-            <i class="am-icon-angle-right slider"></i>
-            <span>目的地列表</span>
-          </el-menu-item>
-          <el-menu-item index="2-2">
-            <i class="am-icon-angle-right slider"></i>
-            <span>省份列表</span>
-          </el-menu-item>
-          <el-menu-item index="2-3">
-            <i class="am-icon-angle-right slider"></i>
-            <span>城市列表</span>
-          </el-menu-item>
-          <el-menu-item index="2-4">
-            <i class="am-icon-angle-right slider"></i>
-            <span>景点列表</span>
-          </el-menu-item>
-          <el-menu-item index="2-5">
-            <i class="am-icon-angle-right slider"></i>
-            <span>评论管理</span>
-          </el-menu-item>
+          <a href="http://120.79.33.51/admin/destination">
+            <el-menu-item index="2-1">
+              <i class="am-icon-angle-right slider"></i>
+              <span>目的地列表</span>
+            </el-menu-item>
+          </a>
+          <a href="http://120.79.33.51/admin/destination?lv=1">
+            <el-menu-item index="2-2">
+              <i class="am-icon-angle-right slider"></i>
+              <span>省份列表</span>
+            </el-menu-item>
+          </a>
+          <a href="http://120.79.33.51/admin/destination?lv=2">
+            <el-menu-item index="2-3">
+              <i class="am-icon-angle-right slider"></i>
+              <span>城市列表</span>
+            </el-menu-item>
+          </a>
+          <a href="http://120.79.33.51/admin/destination?lv=3">
+            <el-menu-item index="2-4">
+              <i class="am-icon-angle-right slider"></i>
+              <span>景点列表</span>
+            </el-menu-item>
+          </a>
+          <a href="http://120.79.33.51/admin/destinationsComment">
+            <el-menu-item index="2-5">
+              <i class="am-icon-angle-right slider"></i>
+              <span>评论管理</span>
+            </el-menu-item>
+          </a>
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="3">
@@ -72,36 +92,46 @@
           <span>锦囊管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="3-1">
-            <i class="am-icon-angle-right slider"></i>
-            <span>锦囊列表</span>
-          </el-menu-item>
-          <el-menu-item index="3-2">
-            <i class="am-icon-angle-right slider"></i>
-            <span>评论管理</span>
-          </el-menu-item>
-          <el-menu-item index="3-3">
-            <i class="am-icon-angle-right slider"></i>
-            <span>纠错管理</span>
-          </el-menu-item>
+          <a href="http://120.79.33.51/admin/tips">
+            <el-menu-item index="3-1">
+              <i class="am-icon-angle-right slider"></i>
+              <span>锦囊列表</span>
+            </el-menu-item>
+          </a>
+          <a href="http://120.79.33.51/admin/tipsComments">
+            <el-menu-item index="3-2">
+              <i class="am-icon-angle-right slider"></i>
+              <span>评论管理</span>
+            </el-menu-item>
+          </a>
+          <a href="http://120.79.33.51/admin/tipsError">
+            <el-menu-item index="3-3">
+              <i class="am-icon-angle-right slider"></i>
+              <span>纠错管理</span>
+            </el-menu-item>
+          </a>
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="4">
         <template slot="title">
           <i class="am-icon-motorcycle slider slider-motorcycle"></i>
-          <span>行程单管理</span>
+          <span>路书管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="4-1">
-            <i class="am-icon-angle-right slider"></i>
-            <span>行程单管理</span>
-          </el-menu-item>
+          <a href="http://120.79.33.51/admin/journeys">
+            <el-menu-item index="4-1">
+              <i class="am-icon-angle-right slider"></i>
+              <span>路书管理</span>
+            </el-menu-item>
+          </a>
         </el-menu-item-group>
       </el-submenu>
-      <el-menu-item index="5">
-        <i class="am-icon-share-alt slider slider-alt"></i>
-        <span slot="title">社区管理</span>
-      </el-menu-item>
+      <a href="http://120.79.33.51/admin/notopen">
+        <el-menu-item index="4">
+          <i class="am-icon-share-alt slider slider-alt"></i>
+          <span slot="title">社区管理</span>
+        </el-menu-item>
+      </a>
       <el-submenu index="6">
         <template slot="title">
           <i class="am-icon-shopping-cart slider slider-cart"></i>
@@ -118,10 +148,18 @@
           </el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-menu-item index="7">
-        <i class="am-icon-user slider"></i>
-        <span slot="title">用户管理</span>
-      </el-menu-item>
+      <a href="http://120.79.33.51/admin/users">
+        <el-menu-item index="7">
+          <i class="am-icon-user slider"></i>
+          <span slot="title">用户管理</span>
+        </el-menu-item>
+      </a>
+      <a href="http://120.79.33.51/admin/staffs">
+        <el-menu-item index="8">
+          <i class="am-icon-user slider"></i>
+          <span slot="title">员工管理</span>
+        </el-menu-item>
+      </a>
     </el-menu>
   </div>
 </template>
@@ -129,9 +167,19 @@
 <script>
   export default {
     name: 'bar',
+    props: ['userInfo'],
+    watch: {
+      userInfo: {
+        deep: true,
+        handler (v) {
+          this.user = v
+        }
+      }
+    },
     data () {
       return {
-        isCollapse: false
+        isCollapse: false,
+        user: ''
       }
     }
   }
